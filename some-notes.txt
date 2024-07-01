@@ -1,0 +1,19 @@
+#1. Context (whole implementation in App.js file):
+To create Context API, we do it in 3 steps (provider, value, consumer):
+1) create a context
+2) provide value to child components 
+3) consume
+
+step 1:
+const SomethingContext = createContext();
+createContext is a built-in function in React, it accepts the default value but it's useless as this default cannot change over time, so just leave it empty or put 'null'.
+
+step 2:
+Example: the 'return' of App component.
+value={{...}} - the object that will contain all the data that we want to make accessible to the child components.
+
+step 3:
+Example: the Header, SearchPosts, Results components
+useContext(pass entire context object); - this returns the entire value that we pass into the context
+
+#2. PostContext.js file - is about custom provider and hook implemented in App-vs.js file
