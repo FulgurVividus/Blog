@@ -1,4 +1,4 @@
-import { memo, useEffect, useState } from "react";
+import { memo, useEffect, useMemo, useState } from "react";
 import { faker } from "@faker-js/faker";
 
 function createRandomPost() {
@@ -41,10 +41,16 @@ function App() {
     [isFakeDark]
   );
 
-  const archiveOptions = {
-    show: false,
-    title: "Post archive in addition to main posts",
-  };
+  // useMemo() - makes this object stable over time.
+  // useMemo() - takes in a callback function which will be called in initial render, the work of callback function will be done in initial render and the result will be stored in cache.
+  // useMemo() - accepts the 'dependency array'. [] empty means that the value will be computed once in the beginning and then never changes.
+  // [variables] - means that if variables change, it'll be executed again. useMemo() is listening for changes in the dependency array.
+  const archiveOptions = useMemo(() => {
+    return {
+      show: false,
+      title: `Post archive in addition to ${posts.length} main posts`,
+    };
+  }, [posts.length]);
 
   return (
     <section>
