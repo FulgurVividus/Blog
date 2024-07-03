@@ -1,6 +1,6 @@
 // Custom Context Provider Component
 
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useMemo, useState } from "react";
 import { faker } from "@faker-js/faker";
 
 function createRandomPost() {
@@ -37,19 +37,19 @@ function PostProvider({ children }) {
     setPosts([]);
   }
 
+  const value = useMemo(() => {
+    return {
+      posts: searchedPosts,
+      onAddPost: handleAddPost,
+      onClearPosts: handleClearPosts,
+      searchQuery: searchQuery,
+      setSearchQuery: setSearchQuery,
+    };
+  }, [searchQuery, searchedPosts]);
+
   return (
     // 2) PROVIDE VALUE TO CHILD COMPONENTS
-    <PostContext.Provider
-      value={{
-        posts: searchedPosts,
-        onAddPost: handleAddPost,
-        onClearPosts: handleClearPosts,
-        searchQuery: searchQuery,
-        setSearchQuery: setSearchQuery,
-      }}
-    >
-      {children}
-    </PostContext.Provider>
+    <PostContext.Provider value={value}>{children}</PostContext.Provider>
   );
 }
 
@@ -64,3 +64,9 @@ function usePosts() {
 }
 
 export { PostProvider, usePosts };
+
+//! NOTE
+// Can optimize the Context in case when 3 factors are true at the same time:
+// 1. the state in the Context needs to change all the time
+// 2. the Context has many consumers
+// 3. the app is slow and laggy
